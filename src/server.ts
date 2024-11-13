@@ -19,6 +19,9 @@ connectDB();
 
 const server = express();
 
+// Read data from forms
+server.use(express.json());
+
 server.use('/api/products', router)
 
 export default server;
