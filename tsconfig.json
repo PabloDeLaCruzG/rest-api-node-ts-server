@@ -6,7 +6,9 @@
     "strict": false,
     "sourceMap": true,
     "esModuleInterop": true,
-    "declaration": true                             /* Skip type checking all .d.ts files. */
+    "declaration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true                             /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*.ts"]
 }
