@@ -3,10 +3,6 @@ import express from 'express';
 import router from './router';
 import db from './config/db';
 
-afterAll(async () => {
-    await db.close(); // Cierra la conexión
-});
-
 // Conect to DB
 async function connectDB() {
     try {
