@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec ts-node ./src/index.ts",
     "test": "jest --detectOpenHandles",
+    "test:coverage": "npm run pretest && jest --coverage --detectOpenHandles",
     "pretest": "ts-node ./src/data --clear"
   },
   "author": "Pablo De La Cruz",
