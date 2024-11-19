@@ -1,5 +1,6 @@
-import { Link, Form, useActionData, ActionFunctionArgs } from "react-router-dom";
+import { Link, Form, useActionData, ActionFunctionArgs, redirect } from "react-router-dom";
 import { Toaster, toast } from 'sonner'
+import { addProduct } from "../services/ProductService";
 
 // function action who return the request form in console
 export async function action( {request}: ActionFunctionArgs ) {
@@ -11,7 +12,9 @@ export async function action( {request}: ActionFunctionArgs ) {
   }
   if(error.length) return error;
 
-  return {};
+  await addProduct(data);
+
+  return redirect('/');
 }
 
 export default function NewProduct() {
