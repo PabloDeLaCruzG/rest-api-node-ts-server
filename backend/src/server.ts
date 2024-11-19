@@ -1,5 +1,6 @@
 import colors from 'colors';
 import cors, { CorsOptions } from 'cors';
+import morgan from 'morgan';
 import express from 'express';
 import router from './router';
 import db from './config/db';
@@ -43,6 +44,9 @@ server.use(cors(corsOptions));
 
 // Read data from forms
 server.use(express.json());
+
+// With morgan you can see info about de requests
+server.use(morgan('dev'));
 
 server.use('/api/products', router);
 
