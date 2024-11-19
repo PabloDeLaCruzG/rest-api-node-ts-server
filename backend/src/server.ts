@@ -1,4 +1,5 @@
 import colors from 'colors';
+import cors, { CorsOptions } from 'cors';
 import express from 'express';
 import router from './router';
 import db from './config/db';
@@ -21,6 +22,24 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 const server = express();
+
+// CORS
+const corsOptions: CorsOptions = {
+    origin: function (origin, callback) {
+        if (origin === process.env.FRONTEND_URL) {
+            console.log(colors.bgGreen.white('Allowed by CORS'));
+            callback(null, true);
+        } else {
+            console.log(colors.bgRed.white('Not allowed by CORS'));
+            callback(new Error(colors.bgRed.white('Not allowed by CORS')));
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+};
+
+server.use(cors(corsOptions));
 
 // Read data from forms
 server.use(express.json());
