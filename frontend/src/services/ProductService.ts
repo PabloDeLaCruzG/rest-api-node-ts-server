@@ -31,8 +31,12 @@ export async function getProducts() {
     try {
         const url = `${import.meta.env.VITE_API_URL}/api/products`;
         const { data } = await axios.get(url);
-        const result = safeParse(ProductsSchema, data.data);
-        if (result.success) {return result.output} else {throw new Error('Error parsing data')}
+        const result = safeParse(ProductsSchema, data);
+        if (result.success) {
+            return result.output
+        } else {
+            throw new Error('Error parsing data')
+        }
     } catch (error) {
         console.log(error);
     }
