@@ -1,9 +1,19 @@
-import { Link, Form, useActionData, ActionFunctionArgs, redirect } from "react-router-dom";
+import { Link, Form, useActionData, ActionFunctionArgs, redirect, LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { Toaster, toast } from 'sonner'
-import { addProduct } from "../services/ProductService";
+import { getProductById, updateProduct } from "../services/ProductService";
+import { Product } from "../types";
 
-// function action who return the request form in console
-export async function action( {request}: ActionFunctionArgs ) {
+export async function loader({ params } : LoaderFunctionArgs) {
+  if (params.id !== undefined) {
+    const product = await getProductById(+params.id);
+    if (!product) {
+      return redirect('/');
+    }
+    return product;
+  }
+}
+
+export async function action( {request, params}: ActionFunctionArgs ) {
   const data = Object.fromEntries(await request.formData());
 
   let error = '';
@@ -12,14 +22,23 @@ export async function action( {request}: ActionFunctionArgs ) {
   }
   if(error.length) return error;
 
-  await addProduct(data);
+  if (params.id !== undefined) {
+    await updateProduct(+params.id, data);
+  }
 
   return redirect('/');
 }
 
+const availabilityOptions = [
+  { value: true, name: 'Disponible' },
+  { value: false, name: 'No disponible' },
+];
+
 export default function EditProduct() {
 
   const error = useActionData() as string;
+
+  const product = useLoaderData() as Product;
 
   return (
     <>
@@ -52,7 +71,7 @@ export default function EditProduct() {
           name="name"
           className="border border-slate-300 rounded p-2"
           placeholder="Nombre del producto"
-          
+          defaultValue={product.name}
         />
         <label htmlFor="price" className="text-lg font-bold">
           Precio
@@ -63,8 +82,25 @@ export default function EditProduct() {
           name="price"
           className="border border-slate-300 rounded p-2"
           placeholder="Precio producto, ej. 200, 300..."
-          
+          defaultValue={product.price}
         />
+
+        <div className="mb-4">
+          <label htmlFor="availability" className="text-lg font-bold">
+            Disponibilidad
+          </label>
+          <select
+            id="availability"
+            name="availability"
+            className="mt-2 block w-full border-gray-50 p-3"
+            defaultValue={product?.availability.toString()}
+          >
+            {availabilityOptions.map((option) => (
+              <option key={option.name} value={option.value.toString()}>{option.name}</option>
+            ))}
+          </select>
+        </div>
+
         <input 
           type="submit" 
           className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded cursor-pointer" 

@@ -1,22 +1,21 @@
-import { object, string, number, boolean, array } from 'valibot'
+import { z } from "zod";
 
-export const DraftProductsSchema = object({
-    name: string(),
-    price: number(),
+// Esquema para borradores de productos
+export const DraftProductsSchema = z.object({
+    name: z.string(),
+    price: z.number(),
 });
 
-export const ProductSchema = object({
-    id: number(),
-    name: string(),
-    price: number(),
-    availability: boolean(),
+// Esquema para un producto
+export const ProductSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    price: z.number(),
+    availability: z.boolean(),
 });
 
-export const ProductsSchema = array(ProductSchema);
+// Esquema para una lista de productos
+export const ProductsSchema = z.array(ProductSchema);
 
-export type Product = {
-    id: number;
-    name: string;
-    price: number;
-    availability: boolean;
-};
+// Tipo Product basado en el esquema de Zod
+export type Product = z.infer<typeof ProductSchema>;

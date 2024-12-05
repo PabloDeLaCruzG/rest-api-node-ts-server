@@ -18,3 +18,7 @@ function countryToCurrency(countryCode: string): string {
     };
     return currencyMap[countryCode] || 'USD'; // DEFAULT USD
 }
+
+export function toBoolean(str: string) {
+    return str.toLowerCase() === 'true';
+}
