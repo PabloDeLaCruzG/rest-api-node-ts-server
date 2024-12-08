@@ -2,6 +2,7 @@ import { Link, Form, useActionData, ActionFunctionArgs, redirect, LoaderFunction
 import { Toaster, toast } from 'sonner'
 import { getProductById, updateProduct } from "../services/ProductService";
 import { Product } from "../types";
+import ProductForm from "../components/ProductForm";
 
 export async function loader({ params } : LoaderFunctionArgs) {
   if (params.id !== undefined) {
@@ -62,27 +63,9 @@ export default function EditProduct() {
         className="mt-10 flex flex-col gap-4"
         method="POST"
       >
-        <label htmlFor="name" className="text-lg font-bold">
-          Nombre
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          className="border border-slate-300 rounded p-2"
-          placeholder="Nombre del producto"
-          defaultValue={product.name}
-        />
-        <label htmlFor="price" className="text-lg font-bold">
-          Precio
-        </label>
-        <input
-          type="number"
-          id="price"
-          name="price"
-          className="border border-slate-300 rounded p-2"
-          placeholder="Precio producto, ej. 200, 300..."
-          defaultValue={product.price}
+        
+        <ProductForm 
+          product={product}
         />
 
         <div className="mb-4">

@@ -71,8 +71,8 @@ export async function updateProduct(id: Product['id'], data: ProductData) {
         const result = ProductSchema.safeParse({
             id,
             name: data.name,
-            price: NumberSchema.parse(data.price), // Coerción automática a número
-            availability: toBoolean(data.availability.toString()), // Convierte a boolean
+            price: NumberSchema.parse(data.price), 
+            availability: toBoolean(data.availability.toString()),
         });
 
         if(result.success) {
@@ -85,6 +85,15 @@ export async function updateProduct(id: Product['id'], data: ProductData) {
         } else {
             throw new Error('No valid data');
         }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function deleteProduct(id: Product['id']) {
+    try {
+        const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`;
+        await axios.delete(url);
     } catch (error) {
         console.log(error);
     }
